@@ -1,0 +1,12 @@
+extends ../layout
+
+block content
+   h1= title
+   if user
+      h2= user.name
+      if user.age
+         p Возраст: #{user.age}
+      if user.photo
+         img(src='/uploads/users/' + user.photo)
+   else
+      h2='Водителя с таким id нет в базе'

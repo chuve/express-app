@@ -1,0 +1,22 @@
+extends ../layout
+block content
+	h1= title
+	form(method='post' enctype='multipart/form-data')
+		label(for='name') Имя
+		br
+		input(type='text', id='name', name='name', value=form ? form.name : '')
+		br
+		label(for='age') Возраст
+		br
+		input(type='text', id='age', name='age', value=form ? form.age : '')
+		br
+		label(for='photo') Фотография
+		br
+		input(type='file', id='photo', name='photo')
+		br
+		input(type='submit', value='Добавить')
+		if errors
+			for error in errors
+				p=error.message
+	div(class='spacer')
+	a(href='./') Просмотреть список

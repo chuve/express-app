@@ -1,0 +1,12 @@
+extends ../layout
+
+block content
+   h1= title
+   p Здесь вы можете найти список всех водителей, которые есть в системе
+   ul
+   for user in users
+     li
+        a(href=user._id)
+         span Имя: #{user.name}
+   div(class='spacer')
+   a(href='./add') Добавить

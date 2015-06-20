@@ -1,43 +1,63 @@
 var express = require('express');
 var router = express.Router();
-var db = require('../helpers/mongo_connection.js');
+var User = require('../models/user');
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
 
-  db.collection('users').find().toArray(function(err, result) {
+  User.find(function(err, result) {
     if (err) throw err;
-    res.render('users', {
+    res.render('drivers', {
       title: 'Список водителей',
       users : result
     });
-    db.close();
   });
 
 });
 
 router.route('/add')
     .get(function(req, res, next) {
-      res.render('users/add', {
+      res.render('drivers/add', {
         title: 'Добавить водителя'
       });
     })
     .post(function(req, res, next) {
-      var status = req.body.name.length;
 
-      if (status) {
-        db.collection('users').insert({
-          'name': req.body.name
-        }, function() {
+      var user = new User({
+        name: req.body.name,
+        age: req.body.age,
+        photo: req.files.photo.name
+      });
+
+      user.save(function(err){
+        if(err){
+          res.render('drivers/add', {
+            title: 'Добавить водителя',
+            form: req.body,
+            errors: err.errors
+          });
+        } else {
           res.redirect('.');
-          db.close();
-        });
-      } else {
-        res.render('users/add', {
-          title: 'Добавить водителя',
-          error: 'Ошибка, поле не может быть пустым'
-        });
-      }
+        }
+      });
+    });
+
+router.param('user_id', function(req, res, next, user_id) {
+  // find user by id
+  User.findById(user_id, function(err, user) {
+    if (user) {
+      req.user = user;
+    }
+    next();
+  });
+});
+
+router.route('/:user_id')
+    .get(function(req, res) {
+      res.render('drivers/view', {
+        title: 'Просмотр профиля водителя',
+        user: req.user
+      })
     });
 
 module.exports = router;

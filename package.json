@@ -12,8 +12,13 @@
     "express": "~4.12.4",
     "jade": "~1.9.2",
     "mongodb": "^1.4.38",
+    "mongoose": "^4.0.5",
     "mongoskin": "^1.4.13",
     "morgan": "~1.5.3",
+    "multer": "^0.1.8",
     "serve-favicon": "~2.2.1"
+  },
+  "devDependencies": {
+    "mocha": "^2.2.5"
   }
 }

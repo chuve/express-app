@@ -4,6 +4,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var multer = require('multer');
 
 // route modules
 var routes = require('./routes/index');
@@ -19,11 +20,22 @@ app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(multer({
+  dest: './uploads',
+  changeDest: function(dest, req, res) {
+    console.log(req.path);
+    if (req.path == '/users/add') {
+      dest += '/users/';
+    }
+    return dest;
+  }
+}));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use('/static', express.static(path.join(__dirname, 'public')));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 app.use('/', routes);
-app.use('/users', users);
+app.use('/drivers', users);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
