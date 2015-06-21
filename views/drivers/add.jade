@@ -1,22 +1,20 @@
 extends ../layout
 block content
 	h1= title
-	form(method='post' enctype='multipart/form-data')
-		label(for='name') Имя
-		br
-		input(type='text', id='name', name='name', value=form ? form.name : '')
-		br
-		label(for='age') Возраст
-		br
-		input(type='text', id='age', name='age', value=form ? form.age : '')
-		br
-		label(for='photo') Фотография
-		br
-		input(type='file', id='photo', name='photo')
-		br
-		input(type='submit', value='Добавить')
-		if errors
+	form(method='post' enctype='multipart/form-data', class='form-horizontal')
+		div(class='form-group')
+			label(for='name') Имя
+			input(type='text', class='form-control', id='name', name='name', value=form ? form.name : '')
+		div(class='form-group')
+			label(for='age') Возраст
+			input(type='text', class='form-control', id='age', name='age', value=form ? form.age : '')
+		div(class='form-group')
+			label(for='photo') Фотография
+			input(type='file', id='photo', name='photo')
+		div(class='form-group')
+			input(type='submit', value='Добавить', class='btn btn-primary btn-lg')
+	if errors
+		div(class='alert alert-danger')
 			for error in errors
 				p=error.message
-	div(class='spacer')
 	a(href='./') Просмотреть список

@@ -8,7 +8,7 @@ var multer = require('multer');
 
 // route modules
 var routes = require('./routes/index');
-var users = require('./routes/users');
+var drivers = require('./routes/drivers');
 
 var app = express();
 
@@ -16,26 +16,25 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
-app.use(favicon(__dirname + '/public/favicon.ico'));
+app.use(favicon(__dirname + '/static/favicon.ico'));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(multer({
   dest: './uploads',
   changeDest: function(dest, req, res) {
-    console.log(req.path);
-    if (req.path == '/users/add') {
-      dest += '/users/';
+    if (req.path == '/drivers/add') {
+      dest += '/drivers/';
     }
     return dest;
   }
 }));
 app.use(cookieParser());
-app.use('/static', express.static(path.join(__dirname, 'public')));
+app.use('/static', express.static(path.join(__dirname, 'static')));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 app.use('/', routes);
-app.use('/drivers', users);
+app.use('/drivers', drivers);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
