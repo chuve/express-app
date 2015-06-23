@@ -1,15 +1,15 @@
 var express = require('express');
 var router = express.Router();
-var User = require('../models/user');
+var DriverModel = require('../models/driverModel');
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
 
-  User.find(function(err, result) {
+  DriverModel.find(function(err, result) {
     if (err) throw err;
     res.render('drivers', {
       title: 'Список водителей',
-      users : result
+      drivers: result
     });
   });
 
@@ -23,13 +23,13 @@ router.route('/add')
     })
     .post(function(req, res, next) {
 
-      var user = new User({
+      var driver = new DriverModel({
         name: req.body.name,
         age: req.body.age,
         photo: req.files.photo ? req.files.photo.name : null
       });
 
-      user.save(function(err){
+      driver.save(function(err){
         if(err){
           res.render('drivers/add', {
             title: 'Добавить водителя',
@@ -42,21 +42,21 @@ router.route('/add')
       });
     });
 
-router.param('user_id', function(req, res, next, user_id) {
+router.param('driver_id', function(req, res, next, driver_id) {
   // find user by id
-  User.findById(user_id, function(err, user) {
-    if (user) {
-      req.user = user;
+  DriverModel.findById(driver_id, function(err, driver) {
+    if (driver) {
+      req.driver = driver;
     }
     next();
   });
 });
 
-router.route('/:user_id')
+router.route('/:driver_id')
     .get(function(req, res) {
       res.render('drivers/view', {
         title: 'Просмотр профиля водителя',
-        user: req.user
+        user: req.driver
       })
     });
 
